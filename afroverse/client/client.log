@@ -1,0 +1,127 @@
+
+> afroverse-client@1.0.0 dev
+> vite
+
+
+  VITE v4.5.14  ready in 131 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
+Error:   Failed to scan for dependencies from entries:
+  /Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/public/index.html
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe JSX syntax extension is not currently enabled[0m
+
+    src/index.js:8:2:
+[37m      8 │   [32m<[37mReact.StrictMode>
+        ╵   [32m^[0m
+
+  The esbuild loader for this file is currently set to "js" but it must be set to "jsx" to be able to parse JSX syntax. You can use "loader: { '.js': 'jsx' }" to do that.
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe symbol "feedReducer" has already been declared[0m
+
+    src/store/index.js:23:7:
+[37m      23 │ import [32mfeedReducer[37m from './slices/feedSlice';
+         ╵        [32m~~~~~~~~~~~[0m
+
+  The symbol "feedReducer" was originally declared here:
+
+    src/store/index.js:5:7:
+[37m      5 │ import [32mfeedReducer[37m from './slices/feedSlice';
+        ╵        [32m~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUnexpected "type"[0m
+
+    src/store/index.js:61:7:
+[37m      61 │ export [32mtype[37m RootState = ReturnType<typeof store.getState>;
+         ╵        [32m~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mMultiple exports with the same name "selectFeedError"[0m
+
+    src/store/slices/feedSlice.js:348:13:
+[37m      348 │ export const [32mselectFeedError[37m = (state) => state.feed.error;
+          ╵              [32m~~~~~~~~~~~~~~~[0m
+
+  The name "selectFeedError" was originally exported here:
+
+    src/store/slices/feedSlice.js:336:13:
+[37m      336 │ export const [32mselectFeedError[37m = (state, tab) => state.feed.feeds[t...
+          ╵              [32m~~~~~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe symbol "selectFeedError" has already been declared[0m
+
+    src/store/slices/feedSlice.js:348:13:
+[37m      348 │ export const [32mselectFeedError[37m = (state) => state.feed.error;
+          ╵              [32m~~~~~~~~~~~~~~~[0m
+
+  The symbol "selectFeedError" was originally declared here:
+
+    src/store/slices/feedSlice.js:336:13:
+[37m      336 │ export const [32mselectFeedError[37m = (state, tab) => state.feed.feeds[t...
+          ╵              [32m~~~~~~~~~~~~~~~[0m
+
+
+    at failureErrorWithLog (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1058:25
+    at runOnEndCallbacks (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1484:45)
+    at buildResponseToResult (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1056:7)
+    at /Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1068:9
+    at new Promise (<anonymous>)
+    at requestCallbacks.on-end (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1067:54)
+    at handleRequest (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:729:19)
+    at handleIncomingPacket (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:755:7)
+    at Socket.readFromStdout (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:679:7)
+1:08:21 AM [vite] vite.config.js changed, restarting server...
+1:08:21 AM [vite] server restarted.
+Error:   Failed to scan for dependencies from entries:
+  /Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/public/index.html
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe JSX syntax extension is not currently enabled[0m
+
+    src/index.js:8:2:
+[37m      8 │   [32m<[37mReact.StrictMode>
+        ╵   [32m^[0m
+
+  The esbuild loader for this file is currently set to "js" but it must be set to "jsx" to be able to parse JSX syntax. You can use "loader: { '.js': 'jsx' }" to do that.
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mThe symbol "updateTribe" has already been declared[0m
+
+    src/store/slices/adminSlice.js:1014:13:
+[37m      1014 │ export const [32m[37m{
+           ╵              [32m^[0m
+
+  The symbol "updateTribe" was originally declared here:
+
+    src/store/slices/adminSlice.js:335:13:
+[37m      335 │ export const [32mupdateTribe[37m = createAsyncThunk(
+          ╵              [32m~~~~~~~~~~~[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mMultiple exports with the same name "updateTribe"[0m
+
+    src/store/slices/adminSlice.js:1028:2:
+[37m      1028 │   [32mupdateTribe[37m,
+           ╵   [32m~~~~~~~~~~~[0m
+
+  The name "updateTribe" was originally exported here:
+
+    src/store/slices/adminSlice.js:335:13:
+[37m      335 │ export const [32mupdateTribe[37m = createAsyncThunk(
+          ╵              [32m~~~~~~~~~~~[0m
+
+
+    at failureErrorWithLog (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1058:25
+    at runOnEndCallbacks (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1484:45)
+    at buildResponseToResult (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1056:7)
+    at /Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1068:9
+    at new Promise (<anonymous>)
+    at requestCallbacks.on-end (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:1067:54)
+    at handleRequest (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:729:19)
+    at handleIncomingPacket (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:755:7)
+    at Socket.readFromStdout (/Users/abelsifisoshongwe/Desktop/ui-apps/afroverse/client/node_modules/esbuild/lib/main.js:679:7)
