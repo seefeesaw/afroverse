@@ -68,11 +68,54 @@ const walletService = {
    */
   async getOrCreateWallet(userId) {
     try {
+      if (!userId) {
+        return null;
+      }
       const wallet = await Wallet.getOrCreateWallet(userId);
       return wallet;
     } catch (error) {
       logger.error('Error getting/creating wallet:', error);
       throw error;
+    }
+  },
+
+  /**
+   * Get wallet by userId
+   * @param {string} userId - User ID
+   * @returns {Promise<Wallet>} Wallet instance
+   */
+  async getWallet(userId) {
+    return this.getOrCreateWallet(userId);
+  },
+
+  /**
+   * Get wallet balance
+   * @param {string} userId - User ID
+   * @returns {Promise<number>} Balance
+   */
+  async getBalance(userId) {
+    try {
+      const wallet = await this.getOrCreateWallet(userId);
+      return wallet.balance;
+    } catch (error) {
+      logger.error('Error getting balance:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Check if user can afford an amount
+   * @param {string} userId - User ID
+   * @param {number} amount - Amount to check
+   * @returns {Promise<boolean>} Can afford
+   */
+  async canAfford(userId, amount) {
+    try {
+      const wallet = await this.getOrCreateWallet(userId);
+      return wallet.hasEnough(amount);
+    } catch (error) {
+      logger.error('Error checking affordability:', error);
+      return false;
     }
   },
 
@@ -104,24 +147,23 @@ const walletService = {
   /**
    * Earn coins for a specific action
    * @param {string} userId - User ID
+   * @param {number} amount - Amount to earn
    * @param {string} reason - Reason for earning coins
    * @param {object} metadata - Additional metadata
-   * @param {number} customAmount - Custom amount (optional)
    * @returns {Promise<object>} Transaction result
    */
-  async earnCoins(userId, reason, metadata = {}, customAmount = null) {
+  async earnCoins(userId, amount, reason, metadata = {}) {
     try {
+      // Validate inputs
+      if (!amount || amount <= 0) {
+        throw new Error('Amount must be positive');
+      }
+
       const wallet = await this.getOrCreateWallet(userId);
       
       // Check if user can earn today
       if (!wallet.canEarnToday()) {
         throw new Error('Daily earning limit reached');
-      }
-      
-      // Determine amount
-      const amount = customAmount || COIN_RATES[reason];
-      if (!amount) {
-        throw new Error(`Invalid earning reason: ${reason}`);
       }
       
       // Check daily limit
@@ -132,7 +174,7 @@ const walletService = {
       const balanceBefore = wallet.balance;
       
       // Add coins to wallet
-      await wallet.addCoins(amount, reason);
+      await wallet.addCoins(amount);
       
       // Create transaction record
       const transaction = new WalletTransaction({
@@ -166,30 +208,29 @@ const walletService = {
   /**
    * Spend coins for a specific action
    * @param {string} userId - User ID
+   * @param {number} amount - Amount to spend
    * @param {string} reason - Reason for spending coins
    * @param {object} metadata - Additional metadata
-   * @param {number} customAmount - Custom amount (optional)
    * @returns {Promise<object>} Transaction result
    */
-  async spendCoins(userId, reason, metadata = {}, customAmount = null) {
+  async spendCoins(userId, amount, reason, metadata = {}) {
     try {
+      // Validate inputs
+      if (!amount || amount <= 0) {
+        throw new Error('Amount must be positive');
+      }
+
       const wallet = await this.getOrCreateWallet(userId);
       
-      // Determine amount
-      const amount = customAmount || COIN_COSTS[reason];
-      if (!amount) {
-        throw new Error(`Invalid spending reason: ${reason}`);
-      }
-      
       // Check if user has enough coins
-      if (wallet.balance < amount) {
-        throw new Error('Insufficient coins');
+      if (!wallet.hasEnough(amount)) {
+        throw new Error('Insufficient balance');
       }
       
       const balanceBefore = wallet.balance;
       
       // Spend coins from wallet
-      await wallet.spendCoins(amount, reason);
+      await wallet.spendCoins(amount);
       
       // Create transaction record
       const transaction = new WalletTransaction({
@@ -216,6 +257,55 @@ const walletService = {
       };
     } catch (error) {
       logger.error('Error spending coins:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Refund coins to user
+   * @param {string} userId - User ID
+   * @param {number} amount - Amount to refund
+   * @param {string} reason - Reason for refund
+   * @param {object} metadata - Additional metadata
+   * @returns {Promise<object>} Transaction result
+   */
+  async refundCoins(userId, amount, reason, metadata = {}) {
+    try {
+      if (!amount || amount <= 0) {
+        throw new Error('Amount must be positive');
+      }
+
+      const wallet = await this.getOrCreateWallet(userId);
+      const balanceBefore = wallet.balance;
+      
+      // Add coins back to wallet
+      await wallet.addCoins(amount);
+      
+      // Create transaction record
+      const transaction = new WalletTransaction({
+        userId,
+        walletId: wallet._id,
+        type: 'refund',
+        amount,
+        reason,
+        metadata,
+        balanceBefore,
+        balanceAfter: wallet.balance,
+        status: 'completed'
+      });
+      
+      await transaction.save();
+      
+      logger.info(`User ${userId} refunded ${amount} coins for ${reason}`);
+      
+      return {
+        success: true,
+        amount,
+        balance: wallet.balance,
+        transaction: transaction.getSummary()
+      };
+    } catch (error) {
+      logger.error('Error refunding coins:', error);
       throw error;
     }
   },
@@ -320,6 +410,30 @@ const walletService = {
   },
 
   /**
+   * Get wallet statistics
+   * @param {string} userId - User ID
+   * @returns {Promise<object>} Wallet stats
+   */
+  async getWalletStats(userId) {
+    try {
+      const wallet = await this.getOrCreateWallet(userId);
+      
+      return {
+        balance: wallet.balance,
+        totalEarned: wallet.totalEarned,
+        totalSpent: wallet.totalSpent,
+        netEarnings: wallet.totalEarned - wallet.totalSpent,
+        dailyEarned: wallet.dailyEarned,
+        canEarnMore: wallet.canEarnToday(),
+        lastEarnedAt: wallet.lastEarnedAt
+      };
+    } catch (error) {
+      logger.error('Error getting wallet stats:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Get coin earning opportunities for user
    * @param {string} userId - User ID
    * @returns {Promise<object>} Earning opportunities
@@ -394,67 +508,94 @@ const walletService = {
 
   /**
    * Get coin spending options
-   * @returns {Promise<object>} Spending options
+   * @returns {Promise<Array>} Spending options
    */
   async getSpendingOptions() {
-    return {
-      streak_save: {
+    return [
+      {
+        action: 'streak_save',
         title: 'Save Streak',
         description: 'Protect your streak from breaking',
         cost: COIN_COSTS.streak_save,
         icon: '🛡️'
       },
-      battle_boost: {
+      {
+        action: 'boost_video',
         title: 'Battle Boost',
         description: 'Double your battle visibility',
         cost: COIN_COSTS.battle_boost,
         icon: '⚡'
       },
-      priority_transformation: {
+      {
+        action: 'priority_transformation',
         title: 'Priority Processing',
         description: 'Skip the queue for faster results',
         cost: COIN_COSTS.priority_transformation,
         icon: '⚡'
       },
-      retry_transformation: {
+      {
+        action: 'retry_transformation',
         title: 'Retry Transformation',
         description: 'Try again with the same photo',
         cost: COIN_COSTS.retry_transformation,
         icon: '🔄'
       },
-      premium_filter: {
+      {
+        action: 'premium_filter',
         title: 'Premium Filter',
         description: 'Unlock premium filters for 24 hours',
         cost: COIN_COSTS.premium_filter,
         icon: '✨'
       },
-      tribe_support: {
+      {
+        action: 'tribe_support',
         title: 'Tribe Support',
         description: 'Add 50 points to your tribe',
         cost: COIN_COSTS.tribe_support,
         icon: '🤝'
       },
-      rematch_battle: {
+      {
+        action: 'rematch_battle',
         title: 'Battle Rematch',
         description: 'Challenge the same opponent again',
         cost: COIN_COSTS.rematch_battle,
         icon: '🔄'
       }
-    };
+    ];
   },
 
   /**
    * Get coin packs for purchase
-   * @returns {Promise<object>} Coin packs
+   * @returns {Promise<Array>} Coin packs
    */
   async getCoinPacks() {
     return Object.entries(COIN_PACKS).map(([type, pack]) => ({
+      id: type,
       type,
       coins: pack.coins,
-      price: pack.price,
+      price: {
+        amount: pack.price,
+        formatted: `$${(pack.price / 100).toFixed(2)}`
+      },
       priceFormatted: `$${(pack.price / 100).toFixed(2)}`,
       bonus: type === 'mega' ? 'Best Value!' : null
     }));
+  },
+
+  /**
+   * Get cost for a specific action
+   * @param {string} action - Action name
+   * @returns {Promise<number>} Cost
+   */
+  async getActionCost(action) {
+    // Map alternative action names
+    const actionMap = {
+      'boost_video': 'battle_boost',
+      'save_streak': 'streak_save'
+    };
+    
+    const mappedAction = actionMap[action] || action;
+    return COIN_COSTS[mappedAction] || 0;
   },
 
   /**

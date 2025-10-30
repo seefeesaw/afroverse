@@ -109,6 +109,10 @@ const userSchema = new mongoose.Schema({
       type: Number,
       default: 100
     },
+    vibranium: {
+      type: Number,
+      default: 0
+    },
     badges: [{
       id: {
         type: String,

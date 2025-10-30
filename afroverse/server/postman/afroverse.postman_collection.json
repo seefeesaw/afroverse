@@ -1,0 +1,3385 @@
+{
+  "info": {
+    "name": "Afroverse API - Complete",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Comprehensive Afroverse API collection covering all routes"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "videoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "battleId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tribeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "commentId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "achievementId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health",
+        "header": []
+      }
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Start Authentication",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/start",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+10000000001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify Authentication",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/verify",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+10000000001\",\n  \"code\": \"000000\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/auth/me",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/refresh",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/logout",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Battles",
+      "item": [
+        {
+          "name": "Create Battle",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/battles/create",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transformId\": \"{{transformId}}\",\n  \"challengeMethod\": \"link\",\n  \"challengeTarget\": \"public\",\n  \"message\": \"Challenge accepted!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Battle",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/battles/{{battleShortCode}}",
+            "header": []
+          }
+        },
+        {
+          "name": "List Active Battles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/battles/active/list",
+            "header": []
+          }
+        },
+        {
+          "name": "Accept Battle",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/battles/accept/{{battleId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transformId\": \"{{transformId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Vote on Battle",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/battles/vote/{{battleId}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"votedFor\": \"challenger\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Report Battle",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/battles/{{battleId}}/report",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"nsfw\",\n  \"details\": \"Inappropriate content\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Videos",
+      "item": [
+        {
+          "name": "Create Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/video/create",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "variant",
+                  "value": "loop",
+                  "type": "text"
+                },
+                {
+                  "key": "style",
+                  "value": "maasai",
+                  "type": "text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Full Body Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/video/fullbody/create",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transformId\": \"{{transformId}}\",\n  \"style\": \"maasai\",\n  \"motionPack\": \"amapiano\",\n  \"durationSec\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Video Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/status/{{videoId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Video History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/video/{{videoId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Share Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/video/{{videoId}}/share",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platform\": \"whatsapp\"\n}"
+            }
+          }
+        },
+        {
+          "name": "View Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/video/{{videoId}}/view",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Public Video",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/{{videoId}}/public",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Motion Packs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/motion-packs",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Recommended Motion Packs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/motion-packs/recommended",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Full Body Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/fullbody/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Audio Tracks",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/audio-tracks",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Video Styles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/video/styles",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transform",
+      "item": [
+        {
+          "name": "Create Transformation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/transform/create",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "style",
+                  "value": "maasai",
+                  "type": "text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Transformation Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/transform/status/{{jobId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Transformation History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/transform/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Public Transformation",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/transform/public/{{shareCode}}",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Available Styles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/transform/styles",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tribes",
+      "item": [
+        {
+          "name": "Get All Tribes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tribes",
+            "header": []
+          }
+        },
+        {
+          "name": "Get My Tribe",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tribes/my-tribe",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Tribe",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tribes/{{tribeId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Join Tribe",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/tribes/join",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tribeId\": \"{{tribeId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Tribe Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/tribes/leaderboard",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Award Tribe Points",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/tribes/points/award",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"battle_win\",\n  \"points\": 50\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Get Feed - For You",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/foryou",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Feed - Following",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/following",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Feed - Tribe",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/tribe",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Feed - Battles",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/battles",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Like Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/feed/video/{{videoId}}/like",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"on\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Share Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/feed/video/{{videoId}}/share",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channel\": \"wa\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Track View",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/feed/video/{{videoId}}/view",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"watchedMs\": 5000,\n  \"completed\": true,\n  \"replayed\": 0,\n  \"sessionId\": \"session123\",\n  \"tab\": \"foryou\",\n  \"position\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "Report Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/feed/video/{{videoId}}/report",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"spam\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Follow Creator",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/feed/video/{{videoId}}/follow",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Video",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/video/{{videoId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Public Video",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/public/{{videoId}}",
+            "header": []
+          }
+        },
+        {
+          "name": "Vote on Battle",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/feed/battles/{{battleId}}/vote",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"side\": \"challenger\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Feed Analytics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/feed/analytics",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leaderboard",
+      "item": [
+        {
+          "name": "Get Tribe Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/tribes",
+            "header": []
+          }
+        },
+        {
+          "name": "Get User Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/users",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Country Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/users/country/ZA",
+            "header": []
+          }
+        },
+        {
+          "name": "Get My Rank",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/me",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Weekly Champions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/weekly-champions",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Recent Champions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/recent-champions",
+            "header": []
+          }
+        },
+        {
+          "name": "Search Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/leaderboard/search?q=warrior",
+            "header": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Get Wallet",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/wallet",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Earn Coins",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/earn",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"daily_login\",\n  \"amount\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "Spend Coins",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/spend",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"boost_video\",\n  \"amount\": 50\n}"
+            }
+          }
+        },
+        {
+          "name": "Purchase Coins",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/purchase",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"packId\": \"pack_100\",\n  \"paymentMethod\": \"stripe\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Transaction History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/wallet/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Earning Opportunities",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/wallet/opportunities",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Spending Options",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/wallet/spending-options",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Coin Packs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/wallet/coin-packs",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Check Action",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/check-action",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"boost_video\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Save Streak",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/save-streak",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Battle Boost",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/battle-boost",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"battleId\": \"{{battleId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Priority Transformation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/priority-transformation",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transformId\": \"{{transformId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Retry Transformation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/retry-transformation",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transformId\": \"{{transformId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Tribe Support",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/wallet/tribe-support",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Achievements",
+      "item": [
+        {
+          "name": "Get All Achievements",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Achievement",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements/{{achievementId}}",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements/categories",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Rarities",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements/rarities",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Achievement Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements/stats",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Achievement Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements/leaderboard",
+            "header": []
+          }
+        },
+        {
+          "name": "Get User Achievements",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/achievements/me",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Claim Achievement Reward",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/achievements/claim/{{achievementId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Initialize Achievements",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/achievements/initialize",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Progress",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/achievements/progress",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"metric\": \"battles_won\",\n  \"value\": 1\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Challenges",
+      "item": [
+        {
+          "name": "Get Daily Challenge",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/challenge/daily",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Weekly Challenge",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/challenge/weekly",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Progress",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/challenge/progress",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activityType\": \"transform\",\n  \"value\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Complete Challenge",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/challenge/complete",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userChallengeId\": \"{{challengeId}}\",\n  \"challengeType\": \"daily\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Challenge Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/challenge/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Challenge History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/challenge/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Challenge Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/challenge/leaderboard",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Tribe Weekly Challenge",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/challenge/tribe-weekly",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/notifications",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/notifications/unread-count",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/notifications/{{notificationId}}/read",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Mark All as Read",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/notifications/read-all",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Settings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/notifications/settings",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/notifications/settings",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channels\": {\n    \"push\": true,\n    \"inapp\": true,\n    \"whatsapp\": false\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Register Device Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/notifications/device-token",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"device_token_123\",\n  \"platform\": \"ios\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remove Device Token",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/notifications/device-token",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Register WhatsApp Phone",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/notifications/whatsapp-phone",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+27123456789\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remove WhatsApp Phone",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/notifications/whatsapp-phone",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Send Test Notification",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/notifications/test",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/notifications/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Referral",
+      "item": [
+        {
+          "name": "Get My Referral Code",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/referral/my-code",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Generate Referral Code",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/referral/generate",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Redeem Referral Code",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/referral/redeem",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"referralCode\": \"REF123\",\n  \"phone\": \"+27123456789\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Invite Link Info",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/referral/invite-link/{{referralCode}}",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Referral Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/referral/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Top Recruiters",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/referral/leaderboard/recruiters",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Top Recruiting Tribes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/referral/leaderboard/tribes",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Referral Rewards",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/referral/rewards",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Claim Referral Reward",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/referral/claim-reward",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rewardType\": \"coins\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Track Referral Share",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/referral/share",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platform\": \"whatsapp\",\n  \"referralCode\": \"REF123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Send Tribe Message",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/chat/tribe/{{tribeId}}/send",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hello tribe!\",\n  \"type\": \"message\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Tribe Messages",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/chat/tribe/{{tribeId}}/messages",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Mute User in Tribe",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/chat/tribe/{{tribeId}}/mute/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"durationHours\": 24,\n  \"reason\": \"spam\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Send Direct Message",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/chat/dm/{{userId}}/send",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hey there!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Direct Messages",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/chat/dm/{{userId}}/messages",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Mark Messages as Read",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/chat/dm/{{conversationId}}/read",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Toggle Reaction",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/chat/react",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messageId\": \"{{messageId}}\",\n  \"emoji\": \"🔥\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Block User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/chat/block/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Chat Settings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/chat/settings?tribeId={{tribeId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Chat Settings",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/chat/settings",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tribeId\": \"{{tribeId}}\",\n  \"notificationSettings\": {\n    \"muted\": false\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Conversations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/chat/conversations",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Get Comments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/comments/{{videoId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Replies",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/comments/{{commentId}}/replies",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Create Comment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/comments",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"videoId\": \"{{videoId}}\",\n  \"text\": \"Great video!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Toggle Like",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/comments/{{commentId}}/like",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Report Comment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/comments/{{commentId}}/report",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"spam\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Pin Comment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/comments/{{commentId}}/pin",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Unpin Comment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/comments/{{commentId}}/unpin",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/comments/{{commentId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Creator",
+      "item": [
+        {
+          "name": "Get Public Share Page",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/public/profile/{{username}}",
+            "header": []
+          }
+        },
+        {
+          "name": "Get Creator Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/profile/{{username}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Creator Feed",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/profile/{{username}}/feed",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Creator Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/profile/{{username}}/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Follow Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/profile/{{username}}/follow-status",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Creator Profile",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/creator/profile",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Creative warrior\",\n  \"bannerUrl\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Follow Creator",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/creator/follow/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Unfollow Creator",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/creator/follow/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Followers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/followers/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Following",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/following/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Top Creators",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/creator/creators/top",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Promote to Creator",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/creator/profile/promote-to-creator",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Boost",
+      "item": [
+        {
+          "name": "Boost Video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/boost/video",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"videoId\": \"{{videoId}}\",\n  \"tier\": \"bronze\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Boost Tribe",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/boost/tribe",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tribeId\": \"{{tribeId}}\",\n  \"tier\": \"rally\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Video Boost",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/boost/video/{{videoId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Tribe Boost",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/boost/tribe/{{tribeId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Boost Tiers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/boost/tiers",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "Get Current Event",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/current",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Upcoming Event",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/upcoming",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Clan War Standings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/war/standings",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Power Hour Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/power-hour",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Clan War Score",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/events/war/score",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activityType\": \"battle_win\",\n  \"value\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User Event Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get User Event History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Event Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/leaderboard",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Tribe War Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/events/tribe-war",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Progression",
+      "item": [
+        {
+          "name": "Get User Progression",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/progression/progression",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Grant XP",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/progression/xp",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"xp\": 100,\n  \"reason\": \"battle_win\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mark Qualifying Action",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/progression/qualify",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"action\": \"transform\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Streak Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/progression/streak",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Qualifying Actions Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/progression/qualifying-actions",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Use Freeze",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/progression/freeze/use",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"confirm\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Grant Freeze",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/progression/freeze/grant",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"count\": 1,\n  \"source\": \"reward\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Claim Reward",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/progression/reward/claim",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rewardId\": \"reward_123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Handle Daily Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/progression/daily-login",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rewards",
+      "item": [
+        {
+          "name": "Get User Achievements",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/achievements",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Unclaimed Rewards",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/inbox",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Claim Reward",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/rewards/claim",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rewardId\": \"reward_123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Equip Cosmetic",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/rewards/equip",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slot\": \"frame\",\n  \"key\": \"golden_frame\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User Inventory",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/inventory",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Equipped Cosmetics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/equipped",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Achievements by Category",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/achievements/category/battle",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Achievements by Rarity",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/achievements/rarity/legendary",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get All Rewards",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/achievements/all",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Achievement by Key",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rewards/achievements/{{achievementKey}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Moderation",
+      "item": [
+        {
+          "name": "Submit Report",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/moderation/report",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetType\": \"video\",\n  \"targetId\": \"{{videoId}}\",\n  \"reason\": \"spam\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Report Reasons",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/reasons",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Block User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/moderation/block",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"blockedUserId\": \"{{userId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Unblock User",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/moderation/block",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"blockedUserId\": \"{{userId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Blocked Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/blocked-users",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Blockers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/blockers",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Moderation History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get User Reports",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/reports",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Reports Against User",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/reports-against",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Moderate Text",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/moderation/moderate-text",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Sample text to moderate\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Check Block",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/check-block/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Moderation Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/stats",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Moderation Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/moderation/status",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Checkout Session",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/payments/checkout-session",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"monthly\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Payment Intent",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/payments/payment-intent",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"boost\",\n  \"metadata\": {}\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Subscription Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/payments/subscription/status",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Cancel Subscription",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/payments/subscription/cancel",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Subscription History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/payments/subscription/history",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Create Trial Subscription",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/payments/subscription/trial",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"days\": 7\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fraud Detection",
+      "item": [
+        {
+          "name": "Get Fraud Detections",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/fraud-detections",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Pending Fraud Detections",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/pending-fraud-detections",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Fraud Detection Statistics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/fraud-detection-statistics",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Trust Score",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/trust-score",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Trust Score",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/fraud-detection/trust-score/update",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"points\": -10,\n  \"reason\": \"spam\",\n  \"action\": \"penalize\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Low Trust Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/low-trust-users",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Shadowbanned Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/shadowbanned-users",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Device Fingerprints",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/device-fingerprints",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Suspicious Devices",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/fraud-detection/suspicious-devices",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/admin/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@afroverse.com\",\n  \"password\": \"admin123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Admin Get Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/profile",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Admin Update Profile",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/admin/profile",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/dashboard",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Moderation Queue",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/moderation/queue",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Moderation Job",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/moderation/jobs/{{jobId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Assign Moderation Job",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/admin/moderation/jobs/{{jobId}}/assign",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Make Moderation Decision",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/admin/moderation/jobs/{{jobId}}/decision",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"approve\",\n  \"reason\": \"Clean\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/users",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/users/{{userId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get User Details",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/users/{{userId}}/details",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Ban User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/admin/users/{{userId}}/ban",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"TOS violation\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Unban User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/admin/users/{{userId}}/unban",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Tribes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/tribes",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Audit Logs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/audit/logs",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

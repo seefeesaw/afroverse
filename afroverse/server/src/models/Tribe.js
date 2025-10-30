@@ -71,14 +71,17 @@ const tribeSchema = new mongoose.Schema({
     },
     objective: {
       type: String,
-      enum: [
-        'most_battles_won',
-        'most_referrals',
-        'most_transformations',
-        'most_votes',
-        'most_activity'
-      ],
-      default: null,
+      enum: {
+        values: [
+          'most_battles_won',
+          'most_referrals',
+          'most_transformations',
+          'most_votes',
+          'most_activity'
+        ],
+        message: '{VALUE} is not a valid objective'
+      },
+      default: undefined,
     },
     score: {
       type: Number,
@@ -119,15 +122,18 @@ const tribeSchema = new mongoose.Schema({
       },
       objective: {
         type: String,
-        enum: [
-          'most_battles_won',
-          'most_transformations',
-          'most_votes_contributed',
-          'most_active_members',
-          'most_referrals',
-          'most_engagement'
-        ],
-        default: null,
+        enum: {
+          values: [
+            'most_battles_won',
+            'most_transformations',
+            'most_votes_contributed',
+            'most_active_members',
+            'most_referrals',
+            'most_engagement'
+          ],
+          message: '{VALUE} is not a valid objective'
+        },
+        default: undefined,
       },
       score: {
         type: Number,

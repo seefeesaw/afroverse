@@ -1,5 +1,5 @@
 const socketService = require('../../sockets/socketService');
-const { logger } = require('../utils/logger');
+const { logger } = require('../../utils/logger');
 
 class InAppProvider {
   constructor() {
